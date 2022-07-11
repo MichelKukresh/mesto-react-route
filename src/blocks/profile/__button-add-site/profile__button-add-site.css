@@ -1,0 +1,22 @@
+.profile__button-add-site {
+  border: solid white 1px;
+  padding: 14px 64px 14px 64px;
+  background-color: #000000;
+  cursor: pointer;
+}
+
+@media (max-width: 690px) {
+  .profile__button-add-site {
+    border-top-width: 2px;
+    margin-top: 33px;
+    padding-bottom: 13px;
+    padding-right: 131px;
+    padding-top: 17px;
+    width: 16px;
+    padding-left: 131px;
+  }
+}
+
+.profile__button-add-site:hover {
+  opacity: 0.8;
+}

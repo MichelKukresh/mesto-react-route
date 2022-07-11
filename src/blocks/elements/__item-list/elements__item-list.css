@@ -1,0 +1,16 @@
+.elements__item-list {
+  margin: 0;
+  background-color: #ffffff;
+  color: #000000;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  max-width: 282px;
+  max-height: 361px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* .elements__item-list:hover {
+  opacity: 0.8;
+} */

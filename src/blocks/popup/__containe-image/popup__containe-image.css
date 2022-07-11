@@ -1,0 +1,11 @@
+.popup__containe-image {
+    position: relative;
+    z-index: 2;
+  }
+  
+  @media (max-width: 540px) {
+    .popup__containe-image {
+      width: 282px;
+    }
+  }
+  

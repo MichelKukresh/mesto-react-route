@@ -1,0 +1,15 @@
+.header__auth { 
+  height: 22px;
+  left: 1027px;
+  top: 51px;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  text-align: right;
+  color: #ffffff;
+  margin-left: 24px;
+  background-color: black;
+  border: none;
+}

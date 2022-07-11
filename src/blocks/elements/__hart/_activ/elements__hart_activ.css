@@ -1,0 +1,9 @@
+.elements__hart_activ {
+  background: url(../../../../images/black-hart.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.elements__hart_activ:hover {
+  opacity: 0.5;
+}

@@ -1,0 +1,5 @@
+.header__mail-auth {
+  display: flex;
+  flex-direction: row;
+  padding-top: 10px;
+}
