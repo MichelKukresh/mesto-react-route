@@ -16,8 +16,6 @@ import Login from "./Login";
 import ProtectedRoute from "./ProtectedRoute";
 import EditRegisterPopup from "./EditRegisterPopup";
 
-
-
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false); // профиль
 
@@ -27,11 +25,11 @@ function App() {
   const [isEditCourseDeletePopupOpen, setIsEditCourseDeletePopupOpen] =
     useState(false); // подтверждение удаления
 
-    ///12 работа
-    const [isEditRegisterPopupPopupOpen, setEditRegisterPopupPopupOpen] =
+  //12 работа
+  const [isEditRegisterPopupPopupOpen, setEditRegisterPopupPopupOpen] =
     useState(false); // Попап регистрации
-    const [isSuccessfulRegistration, setSuccessfulRegistration] = useState(false);//Проверка успешной регистрации
-    const navigate = useNavigate();
+  const [isSuccessfulRegistration, setSuccessfulRegistration] = useState(false); //Проверка успешной регистрации
+  const navigate = useNavigate();
 
   const [cardDeleteAfterCourse, setCardDeleteAfterCourse] = useState({}); //карточка которую нужно удалить
 
@@ -129,8 +127,7 @@ function App() {
     api
       .patchUserInfoNameAbout(name, profession)
       .then((data) => {
-        setCurrentUser(data);
-        console.log(data);
+        setCurrentUser(data);        
       })
       .then(() => closeAllPopups())
       .catch((err) => {
@@ -168,7 +165,7 @@ function App() {
       .finally(() => setButtonInfomationAboutSave("Сохранить"));
   }
 
-  ///12 проектная работа
+  //12 проектная работа
   //Проверка залогинился ли ранее пользователь
   const [loggedIn, setLoggedIn] = useState(false);
   //при первой загрузке проверка есть ли у нас JWT
@@ -191,9 +188,15 @@ function App() {
         password: dataRegister.password,
         email: dataRegister.email,
       }),
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      // если ошибка, отклоняем промис
+      return Promise.reject(`Ошибка: ${res.status}`);
     });
   };
-//для запроса логина
+  //для запроса логина
   const login = (dataRegister) => {
     return fetch(`${BASE_URL}signin`, {
       method: "POST",
@@ -204,8 +207,7 @@ function App() {
         password: dataRegister.password,
         email: dataRegister.email,
       }),
-    })
-    .then((res) => {
+    }).then((res) => {
       if (res.ok) {
         return res.json();
       }
@@ -214,80 +216,70 @@ function App() {
     });
   };
 
-  //email: "kukresh@yandex.ru"
-  //_id: "62cb19486390a40014692cdb"
-
-  const hahdleLogin = () => {
-    setLoggedIn(true);
-  };
-
   const BASE_URL = "https://auth.nomoreparties.co/";
 
   //принимаем данные из вормы регистрации
   const hahdleSubmitRegister = (dataRegister, e) => {
     e.preventDefault();
-    setUserDaraRegister(dataRegister);
-    register(dataRegister)      
-      .then((data)=> {
-        setSuccessfulRegistration(data.ok);
+
+    register(dataRegister)
+      .then((data) => {
+        setSuccessfulRegistration(true);
         setEditRegisterPopupPopupOpen(true);
-        
-        if(data.ok) {
-          
-          navigate("/sign-in");
-        }
+        navigate("/sign-in");
       })
       .catch((err) => {
         console.log(err);
+        setSuccessfulRegistration(false);
+        setEditRegisterPopupPopupOpen(true);
       });
   };
 
-//обработка логина
+  //обработка логина
   const hahdleSubmitLogin = (dataRegister, e) => {
-    e.preventDefault();    
-    
+    e.preventDefault();
 
-    login(dataRegister) 
-       
-      .then((data)=> {
-        //setSuccessfulRegistration(data.ok);
-        //setEditRegisterPopupPopupOpen(true);
-        
-        if(data.token) {
+    login(dataRegister)
+      .then((data) => {
+        if (data.token) {
           setUserDaraRegister(dataRegister);
           setLoggedIn(true);
           navigate("/sign");
-          localStorage.setItem('jwt', data.token);  
-          console.log(localStorage.getItem('jwt'));        
+          localStorage.setItem("jwt", data.token);          
         }
-
       })
       .catch((err) => {
         console.log(err);
+        setSuccessfulRegistration(false);
+        setEditRegisterPopupPopupOpen(true);
       });
-  };  
-///1:08:41 вебинара
+  };
+  
   const tokenCheck = () => {
-    let jwt = localStorage.getItem('jwt');
-    if(jwt) {
-      getJWT(jwt)
-      ///.then((data) => console.log(data))
-      setLoggedIn(true);
+    let jwt = localStorage.getItem("jwt");
+    if (jwt) {
+      getJWT(jwt).then((data) => {        
+        setUserDaraRegister({
+          email: data.data.email,
+          password: "",
+        });
+      }).then(()=> {
+        setLoggedIn(true);
       navigate("/sign");
+      });      
+    } else {
+      navigate("/sign-up");
     }
+  };
 
-  }
-
-
-    const getJWT = (jwt) => {   
+  const getJWT = (jwt) => {
     return fetch(`${BASE_URL}users/me`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "Authorization" : `Bearer ${jwt}`
-      }
-    })
-    .then((res) => {
+        Authorization: `Bearer ${jwt}`,
+      },
+    }).then((res) => {
       if (res.ok) {
         return res.json();
       }
@@ -298,16 +290,14 @@ function App() {
 
   //выход
   const handleLogaut = () => {
-    localStorage.removeItem('jwt');
+    localStorage.removeItem("jwt");
     setUserDaraRegister({
       email: "",
       password: "",
     });
     setLoggedIn(false);
-    navigate("/sign-up");
-    console.log('Все удалено');
-  }
-
+    navigate("/sign-up");    
+  };
 
   return (
     <CurrentUserContext.Provider value={{ currentUser }}>
@@ -318,7 +308,14 @@ function App() {
               path="/sign"
               element={
                 <ProtectedRoute path="/sign" loggedIn={loggedIn}>
-                  <Header textAuth="Выйти" sign="/sign-in" emailAuth="email@mail.ru" handleLogaut={handleLogaut}/>
+                  <Header
+                    textAuth="Выйти"
+                    sign="/sign-in"
+                    emailAuth="email@mail.ru"
+                    handleLogaut={handleLogaut}
+                    typeButton={"button"}
+                    userDaraRegister={userDaraRegister}
+                  />
                   <Main
                     cards={cards}
                     handleCardLike={handleCardLike}
@@ -338,7 +335,11 @@ function App() {
               path="/sign-up"
               element={
                 <div>
-                  <Header textAuth="Войти" sign="/sign-in"/>
+                  <Header
+                    textAuth="Войти"
+                    sign="/sign-in"
+                    userDaraRegister={userDaraRegister}
+                  />
                   <Register hahdleSubmitRegister={hahdleSubmitRegister} />
                 </div>
               }
@@ -347,8 +348,12 @@ function App() {
               path="/sign-in"
               element={
                 <div>
-                  <Header textAuth="Регистрация" sign="/sign-up"/>
-                  <Login hahdleSubmitLogin={hahdleSubmitLogin}/>
+                  <Header
+                    textAuth="Регистрация"
+                    sign="/sign-up"
+                    userDaraRegister={userDaraRegister}
+                  />
+                  <Login hahdleSubmitLogin={hahdleSubmitLogin} />
                 </div>
               }
             ></Route>
@@ -389,15 +394,10 @@ function App() {
           ></EditCourseDeletePopup>
 
           <EditRegisterPopup
-          isOpen={isEditRegisterPopupPopupOpen}
-          closeAllPopups={closeAllPopups}
-          isSuccessfulRegistration={isSuccessfulRegistration}
-
+            isOpen={isEditRegisterPopupPopupOpen}
+            closeAllPopups={closeAllPopups}
+            isSuccessfulRegistration={isSuccessfulRegistration}
           ></EditRegisterPopup>
-
-
-          
-          
         </div>
       </div>
     </CurrentUserContext.Provider>
