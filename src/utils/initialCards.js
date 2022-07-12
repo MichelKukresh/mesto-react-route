@@ -8,8 +8,10 @@ const configValidation = {
 //мой id для сервера
 const myId = "f03d1a7c9876ea4c7fb48341";
 
+const BASE_URL = "https://auth.nomoreparties.co/";
+
 export { configValidation };
 
 export {  
-  myId
+  myId, BASE_URL
 };

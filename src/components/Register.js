@@ -5,11 +5,11 @@ function Register(props) {
   const [registerMail, setRegisterMail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
 
-  function handleOnCangleMail(e) {
+  function handleMailChange(e) {
     setRegisterMail(e.target.value);    
   }
 
-  function handleOnCanglePassword(e) {
+  function handlePasswordChange(e) {
     setRegisterPassword(e.target.value);    
   }
 
@@ -28,15 +28,17 @@ function Register(props) {
       <h2 className="auth__title">Регистрация</h2>
       <form className="auth__form-container">
         <input
+          type="text" 
           className="auth____input-type"
           placeholder="Email"
-          onChange={(e) => handleOnCangleMail(e)}
-        ></input>
+          onChange={(e) => handleMailChange(e)}
+        />
         <input
+          type="password" 
           className="auth____input-type"
           placeholder="Пароль"
-          onChange={(e) => handleOnCanglePassword(e)}
-        ></input>
+          onChange={(e) => handlePasswordChange(e)}
+        />
         <button className="auth__button" onClick={(e) => submitRegister(e)}>
           Зарегистрироваться
         </button>

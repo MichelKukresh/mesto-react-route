@@ -4,18 +4,29 @@ class Api {
     this._headers = config.headers;
   }
 
+  // .then((res) => {
+  //   if (res.ok) {
+  //     return res.json();
+  //   }
+  //   // если ошибка, отклоняем промис
+  //   return Promise.reject(`Ошибка: ${res.status}`);
+  // });
+
+  handleResponse(res) {
+    if (res.ok) {      
+      return res.json();
+      
+    }
+    // если ошибка, отклоняем промис
+    return Promise.reject(`Ошибка: ${res.status}`);
+  };
+
   //получаем данные карточек для дальнейшей вставки
   getInitialCards() {
     return fetch(`${this._baseUrl}cards`, {
       method: "GET",
       headers: this._headers,
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      // если ошибка, отклоняем промис
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    }).then((res) => this.handleResponse(res));
   }
 
   //!!!USER  получаем данные с сервера о пользователе
@@ -23,13 +34,7 @@ class Api {
     return fetch(`${this._baseUrl}users/me`, {
       method: "GET",
       headers: this._headers,
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      // если ошибка, отклоняем промис
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    }).then((res) => this.handleResponse(res));
   }
 
   //!!USER
@@ -42,13 +47,7 @@ class Api {
         name: name,
         about: profession,
       }),
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      // если ошибка, отклоняем промис
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    }).then((res) => this.handleResponse(res));
   }
 
   postCard(name, link) {
@@ -59,65 +58,35 @@ class Api {
         name: name,
         link: link,
       }),
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      // если ошибка, отклоняем промис
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    }).then((res) => this.handleResponse(res));
   }
 
   deleteCard(id) {
     return fetch(`${this._baseUrl}cards/${id}`, {
       method: "DELETE",
       headers: this._headers,
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      // если ошибка, отклоняем промис
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    }).then((res) => this.handleResponse(res));
   }
 
   getOneCard(id) {
     return fetch(`${this._baseUrl}cards/${id}`, {
       method: "GET",
       headers: this._headers,
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      // если ошибка, отклоняем промис
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    }).then((res) => this.handleResponse(res));
   }
 
   changeLikeCardStatus(id, met) {
     return fetch(`${this._baseUrl}cards/likes/${id}`, {
       method: met,
       headers: this._headers,
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      // если ошибка, отклоняем промис
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    }).then((res) => this.handleResponse(res));
   }
 
   deleteLikeCard(id) {
     return fetch(`${this._baseUrl}cards/likes/${id}`, {
       method: "DELETE",
       headers: this._headers,
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      // если ошибка, отклоняем промис
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    }).then((res) => this.handleResponse(res));
   }
 
   //!!!USER
@@ -128,13 +97,7 @@ class Api {
       body: JSON.stringify({
         avatar: link,
       }),
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      // если ошибка, отклоняем промис
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    }).then((res) => this.handleResponse(res));
   }
 }
 

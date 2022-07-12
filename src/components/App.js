@@ -15,6 +15,10 @@ import Register from "./Register";
 import Login from "./Login";
 import ProtectedRoute from "./ProtectedRoute";
 import EditRegisterPopup from "./EditRegisterPopup";
+import { BASE_URL } from "../utils/initialCards";
+import { register, login, getJWT } from "../utils/Fetch"; //запросы fetch
+
+
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false); // профиль
@@ -30,6 +34,24 @@ function App() {
     useState(false); // Попап регистрации
   const [isSuccessfulRegistration, setSuccessfulRegistration] = useState(false); //Проверка успешной регистрации
   const navigate = useNavigate();
+
+  const [selectedCard, setSelectedCard] = useState({
+    state: false,
+    name: "",
+    link: "",
+  }); //для открытия большой карточки
+
+    //Проверка залогинился ли ранее пользователь
+    const [loggedIn, setLoggedIn] = useState(false);
+    //при первой загрузке проверка есть ли у нас JWT
+    useEffect(() => {
+      tokenCheck();
+    }, []);
+    //хранение данных при регистрации
+    const [userDaraRegister, setUserDaraRegister] = useState({
+      email: "",
+      password: "",
+    });
 
   const [cardDeleteAfterCourse, setCardDeleteAfterCourse] = useState({}); //карточка которую нужно удалить
 
@@ -92,8 +114,8 @@ function App() {
     api
       .deleteCard(card._id)
       .then(() => {
-        const cardsWithoutDeleteCard = cards.filter((c) => c._id !== card._id);
-        setCards(cardsWithoutDeleteCard);
+        //const cardsWithoutDeleteCard = cards.filter((c) => c._id !== card._id);
+        setCards((cards) => cards.filter((c) => c._id !== card._id));
       })
       .then(() => closeAllPopups())
       .catch((err) => {
@@ -101,12 +123,6 @@ function App() {
       })
       .finally(() => setButtonInfomationDelete("Да"));
   }
-
-  const [selectedCard, setSelectedCard] = useState({
-    state: false,
-    name: "",
-    link: "",
-  }); //для открытия большой карточки
 
   //пробрасываем в card данные для отрисовки большой карточки
   function onCardClick(name, link) {
@@ -165,64 +181,11 @@ function App() {
       .finally(() => setButtonInfomationAboutSave("Сохранить"));
   }
 
-  //12 проектная работа
-  //Проверка залогинился ли ранее пользователь
-  const [loggedIn, setLoggedIn] = useState(false);
-  //при первой загрузке проверка есть ли у нас JWT
-  useEffect(() => {
-    tokenCheck();
-  }, []);
-  //хранение данных при регистрации
-  const [userDaraRegister, setUserDaraRegister] = useState({
-    email: "",
-    password: "",
-  });
-  //запрос на авторизацию
-  const register = (dataRegister) => {
-    return fetch(`${BASE_URL}signup`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        password: dataRegister.password,
-        email: dataRegister.email,
-      }),
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      // если ошибка, отклоняем промис
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
-  };
-  //для запроса логина
-  const login = (dataRegister) => {
-    return fetch(`${BASE_URL}signin`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        password: dataRegister.password,
-        email: dataRegister.email,
-      }),
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      // если ошибка, отклоняем промис
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
-  };
-
-  const BASE_URL = "https://auth.nomoreparties.co/";
-
   //принимаем данные из вормы регистрации
   const hahdleSubmitRegister = (dataRegister, e) => {
     e.preventDefault();
 
-    register(dataRegister)
+    register(dataRegister, BASE_URL)
       .then((data) => {
         setSuccessfulRegistration(true);
         setEditRegisterPopupPopupOpen(true);
@@ -239,7 +202,7 @@ function App() {
   const hahdleSubmitLogin = (dataRegister, e) => {
     e.preventDefault();
 
-    login(dataRegister)
+    login(dataRegister, BASE_URL)
       .then((data) => {
         if (data.token) {
           setUserDaraRegister(dataRegister);
@@ -258,7 +221,7 @@ function App() {
   const tokenCheck = () => {
     let jwt = localStorage.getItem("jwt");
     if (jwt) {
-      getJWT(jwt).then((data) => {        
+      getJWT(jwt, BASE_URL).then((data) => {        
         setUserDaraRegister({
           email: data.data.email,
           password: "",
@@ -272,23 +235,7 @@ function App() {
     }
   };
 
-  const getJWT = (jwt) => {
-    return fetch(`${BASE_URL}users/me`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${jwt}`,
-      },
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      // если ошибка, отклоняем промис
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
-  };
-
-  //выход
+ //выход
   const handleLogaut = () => {
     localStorage.removeItem("jwt");
     setUserDaraRegister({
@@ -330,7 +277,7 @@ function App() {
                   <Footer />
                 </ProtectedRoute>
               }
-            ></Route>
+            />
             <Route
               path="/sign-up"
               element={
@@ -343,7 +290,7 @@ function App() {
                   <Register hahdleSubmitRegister={hahdleSubmitRegister} />
                 </div>
               }
-            ></Route>
+            />
             <Route
               path="/sign-in"
               element={
@@ -356,7 +303,7 @@ function App() {
                   <Login hahdleSubmitLogin={hahdleSubmitLogin} />
                 </div>
               }
-            ></Route>
+            />
           </Routes>
 
           <EditProfilePopup
@@ -371,19 +318,19 @@ function App() {
             closeAllPopups={closeAllPopups}
             onUpdateAvatar={handleUpdateAvatar}
             buttonInfomationAboutSave={buttonInfomationAboutSave}
-          ></EditAvatarPopup>
+          />
 
           <AddPlacePopup
             isOpen={isAddPlacePopupOpen}
             closeAllPopups={closeAllPopups}
             onUpdatePlace={handleAddPlace}
             buttonInfomationAboutSave={buttonInfomationAboutSave}
-          ></AddPlacePopup>
+          />
 
           <ImagePopup
             onCardClick={selectedCard}
             closeAllPopups={closeAllPopups}
-          ></ImagePopup>
+          />
 
           <EditCourseDeletePopup
             isOpen={isEditCourseDeletePopupOpen}
@@ -391,13 +338,13 @@ function App() {
             cardDelete={cardDeleteAfterCourse}
             handleCardDelete={handleCardDelete}
             buttonInfomationDelete={buttonInfomationDelete}
-          ></EditCourseDeletePopup>
+          />
 
           <EditRegisterPopup
             isOpen={isEditRegisterPopupPopupOpen}
             closeAllPopups={closeAllPopups}
             isSuccessfulRegistration={isSuccessfulRegistration}
-          ></EditRegisterPopup>
+          />
         </div>
       </div>
     </CurrentUserContext.Provider>
