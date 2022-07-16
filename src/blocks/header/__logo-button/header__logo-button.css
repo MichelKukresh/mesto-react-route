@@ -1,0 +1,5 @@
+.header__logo-button {
+  display: flex;
+  justify-content: space-between;  
+  align-items: center;
+}

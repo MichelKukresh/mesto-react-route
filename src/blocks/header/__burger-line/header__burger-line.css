@@ -1,0 +1,10 @@
+.header__burger-line {
+  height: 3px;
+  width: 24px;
+  background-color: #ffffff;
+  margin-bottom: 6px;
+}
+
+.header__burger-line:last-child {
+  margin-bottom: 0px;
+}

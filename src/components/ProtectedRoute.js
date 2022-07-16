@@ -1,4 +1,3 @@
-import React, { Children } from "react";
 import { Navigate } from "react-router-dom";
 
 const ProtectedRoute = ({children, loggedIn}) => {    
@@ -6,7 +5,7 @@ const ProtectedRoute = ({children, loggedIn}) => {
         return children;
     }
 
-    return <Navigate to="/sign-up"/>
+    return <Navigate to="/sign-in"/>
 }
 
 export default ProtectedRoute;

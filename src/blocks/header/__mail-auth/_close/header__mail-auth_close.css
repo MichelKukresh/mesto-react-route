@@ -1,0 +1,5 @@
+@media (max-width: 640px) {
+  .header__mail-auth_close {
+    display: none;
+  }
+}

@@ -3,10 +3,6 @@ import PopupWithForm from "./PopupWithForm";
 import nokRegister from "../images/Union-nok.png";
 import okRegister from "../images/Union-ok.png";
 
-//Вы успешно зарегистрировались!
-//Что-то пошло не так!
-//Попробуйте ещё раз.
-
 function EditProfilePopup(props) {    
   return (
     <PopupWithForm 

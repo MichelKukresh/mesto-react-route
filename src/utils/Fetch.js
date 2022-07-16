@@ -1,5 +1,7 @@
+import { BASE_URL } from "./initialCards"; 
+  
   //запрос на авторизацию
-  const register = (dataRegister, BASE_URL) => {
+  const register = (dataRegister) => {
     return fetch(`${BASE_URL}signup`, {
       method: "POST",
       headers: {
@@ -19,7 +21,7 @@
   };
 
   //для запроса логина
-  const login = (dataRegister, BASE_URL) => {
+  const login = (dataRegister) => {
     return fetch(`${BASE_URL}signin`, {
       method: "POST",
       headers: {
@@ -38,7 +40,7 @@
     });
   }; 
 
-  const getJWT = (jwt, BASE_URL) => {
+  const getJWT = (jwt) => {
     return fetch(`${BASE_URL}users/me`, {
       method: "GET",
       headers: {

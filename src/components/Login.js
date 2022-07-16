@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 function Login(props) {
   const [loginMail, setLoginMail] = useState("");
@@ -8,7 +8,7 @@ function Login(props) {
     setLoginMail(e.target.value);
   }
 
-  function handleCPasswordhange(e) {
+  function handlePasswordChange(e) {
     setLoginPassword(e.target.value);
   }
 
@@ -20,6 +20,7 @@ function Login(props) {
       },
       e
     );
+    setLoginMail("");
   }
 
   return (
@@ -31,12 +32,14 @@ function Login(props) {
           className="auth____input-type"
           placeholder="Email"
           onChange={(e) => handleMailChange(e)}
+          value={loginMail}
         />
         <input
-          type="password" 
+          type="password"
           className="auth____input-type"
           placeholder="Пароль"
-          onChange={(e) => handleCPasswordhange(e)}
+          onChange={(e) => handlePasswordChange(e)}
+          value={loginPassword}
         />
         <button className="auth__button" onClick={(e) => submitLogin(e)}>
           Войти

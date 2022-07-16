@@ -1,6 +1,4 @@
 function PopupWithForm(props) {
-
-  //popup__title_register 
   return (
     <div
       className={` popup popup_type_${props.name} ${
@@ -13,19 +11,9 @@ function PopupWithForm(props) {
           type="button"
           onClick={() => props.closeAllPopups()}
         ></button>
-
-        {props.image && (
-          <img
-            className="popup__image-register"
-            src={props.image}
-            alt="результат регистрации"
-          />
-        )}
-
-        <h2 className={`popup__title ${props.image && "popup__title_register"} `}     >{props.title} </h2>
+        <h2 className="popup__title">{props.title}</h2>
         <form className="popup__content" name="popup-card-content" noValidate>
           {props.children}
-
           {props.buttonText && (
             <button
               className={`popup__save popup__save_invalid ${props.isFormIsValid}`}

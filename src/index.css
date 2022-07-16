@@ -28,6 +28,11 @@ code {
 @import url("./blocks/header/__mail-auth/header__mail-auth.css");
 @import url("./blocks/header/__auth/header__auth.css");
 @import url("./blocks/header/__mail/header__mail.css");
+@import url("./blocks/header/__close-menu/header__close-menu.css");
+@import url("./blocks/header/__logo-button/header__logo-button.css");
+@import url("./blocks/header/__mail-auth/_close/header__mail-auth_close.css");
+@import url("./blocks/header/__burger/header__burger.css");
+@import url("./blocks/header/__burger-line/header__burger-line.css");
 
 @import url("./blocks/content/content.css");
 @import url("./blocks/content/__section/content__section.css");
@@ -66,7 +71,7 @@ code {
 @import url("./blocks/popup/__save/popup__save.css");
 @import url("./blocks/popup/__content/popup__content.css");
 @import url("./blocks/popup/_is-open/popup_is-open.css");
-@import url(".//blocks/popup/__containe-image/popup__containe-image.css");
+@import url("./blocks/popup/__containe-image/popup__containe-image.css");
 @import url("./blocks/popup/__image/popup__image.css");
 @import url("./blocks/popup/__title-image/popup__title-image.css");
 @import url("./blocks/popup/__error/popup__error.css");

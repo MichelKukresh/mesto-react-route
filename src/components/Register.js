@@ -14,12 +14,12 @@ function Register(props) {
   }
 
   function submitRegister(e) {
+    e.preventDefault();
     props.hahdleSubmitRegister(
       {
         email: registerMail,
         password: registerPassword,
-      },
-      e
+      }      
     );
   }
 
@@ -32,12 +32,14 @@ function Register(props) {
           className="auth____input-type"
           placeholder="Email"
           onChange={(e) => handleMailChange(e)}
+          value={registerMail}
         />
         <input
           type="password" 
           className="auth____input-type"
           placeholder="Пароль"
           onChange={(e) => handlePasswordChange(e)}
+          value={registerPassword}
         />
         <button className="auth__button" onClick={(e) => submitRegister(e)}>
           Зарегистрироваться

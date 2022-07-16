@@ -1,10 +1,10 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext} from "react";
 import Card from "./Card.js";
 import krest from "../images/krest.svg";
 import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 
 function Main(props) {
-  const { currentUser } = useContext(CurrentUserContext);
+  const currentUser = useContext(CurrentUserContext);
 
   return (
     <main className="content page__content">

@@ -3,7 +3,7 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 import "./Card.js";
 
 function Сard(props) {
-  const { currentUser } = useContext(CurrentUserContext);
+  const currentUser = useContext(CurrentUserContext);
 
   function handleCardClick() {
     props.onCardClick(props.name, props.link);

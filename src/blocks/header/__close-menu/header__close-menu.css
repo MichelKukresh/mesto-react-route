@@ -1,0 +1,21 @@
+.header__close-menu {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .header__close-menu {
+    display: block;
+    background: url(../../../images/Close-Icon-mobile.svg);
+    right: 0px;
+    width: 20px;
+    height: 20px;
+    background-size: auto;
+    border: none;
+    transition: 0.3s;
+    cursor: pointer;
+  }
+}
+
+.header__close-menu:hover {
+  opacity: 0.8;
+}
